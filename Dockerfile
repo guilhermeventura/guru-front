@@ -1,5 +1,5 @@
 FROM nginx:latest
-COPY ./build/ /usr/share/nginx/html/
+COPY ./build/ /usr/share/nginx/www
 COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 3000
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

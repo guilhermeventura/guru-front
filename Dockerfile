@@ -1,5 +1,8 @@
-FROM nginx:latest
-COPY ./build/* /usr/share/nginx/html/
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM node:9
+ADD package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p /usr/src/app && cp -a /tmp/node_modules /usr/src/app/
+WORKDIR /usr/src/app
+COPY . /usr/src/app/
+CMD [ "npm", "start" ]
 EXPOSE 3000
-CMD ["nginx", "-g", "daemon off;"]

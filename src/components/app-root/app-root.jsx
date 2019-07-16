@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/styles";
 import { CssBaseline } from "@material-ui/core";
 import { guruTheme } from "./../../helpers/guru-ui-theme";
-import SignUp from "./../signup";
 import SignIn from "../signin";
 import Dashboard from "./../../pages/dashboard";
 
@@ -14,8 +13,7 @@ const AppRoot = () => {
       <CssBaseline />
       <Router>
         <Switch>
-          <Route path="/" exact component={SignUp} />
-          <Route path="/signin" component={SignIn} />
+          <Route path="/" exact component={SignIn} />
           <Route path="/dashboard" component={Dashboard} />
         </Switch>
       </Router>

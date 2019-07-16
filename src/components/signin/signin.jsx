@@ -13,7 +13,11 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
-import { customerLogin } from "./../../helpers/services";
+import {
+  customerLogin,
+  createCustomerBasic,
+  getToken
+} from "./../../helpers/services";
 import { useInput } from "./../../helpers/hooks";
 
 const useStyles = makeStyles(theme => ({
@@ -70,11 +74,27 @@ function SignIn(props) {
       token: btoa(password)
     };
 
-    customerLogin(data).then(data => {
-      if (data === true) {
+    const cData = {
+      email: email,
+      password: btoa(password)
+    };
+
+    customerLogin(data).then(res => {
+      if (res === true) {
         goToDashboard();
       } else {
-        setOpenSnackbar(true);
+        let apiToken = "";
+        getToken().then(res => {
+          apiToken = res;
+
+          if (apiToken === cData.password) {
+            createCustomerBasic(cData).then(res => {
+              if (res === true) {
+                goToDashboard();
+              }
+            });
+          }
+        });
       }
     });
   };

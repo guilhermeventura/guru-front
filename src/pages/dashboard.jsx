@@ -71,7 +71,7 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <div
           style={{
-            background: `url(${headerBG}) no-repeat center center`,
+            background: `url(${headerBG}) no-repeat center center `,
             height: 500
           }}
         />

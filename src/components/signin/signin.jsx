@@ -1,24 +1,29 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+
+import { customerLogin } from "./../../helpers/services";
+import { useInput } from "./../../helpers/hooks";
 
 const useStyles = makeStyles(theme => ({
   "@global": {
     body: {
       backgroundColor: theme.palette.common.white
     }
+  },
+  close: {
+    padding: theme.spacing(0.5)
   },
   paper: {
     marginTop: theme.spacing(8),
@@ -36,15 +41,61 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2)
+  },
+  snackError: {
+    backgroundColor: theme.palette.error.dark
   }
 }));
 
-export default function SignIn() {
+function SignIn(props) {
   const classes = useStyles();
 
+  const { value: email, bind: bindemail, reset: resetemail } = useInput("");
+  const {
+    value: password,
+    bind: bindpassword,
+    reset: resetpassword
+  } = useInput("");
+
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  const doLogin = () => {
+    const data = {
+      email: email,
+      token: btoa(password)
+    };
+
+    customerLogin(data).then(data => {
+      if (data === true) {
+        goToDashboard();
+      } else {
+        setOpenSnackbar(true);
+      }
+    });
+  };
+
+  const goToDashboard = () => {
+    setTimeout(() => {
+      props.history.push("/dashboard");
+    }, 3000);
+  };
+
   return (
-    <Container component="main" maxWidth="sm">
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center"
+        }}
+        open={openSnackbar}
+        autoHideDuration={6000}
+        className={classes.snackError}
+        ContentProps={{
+          "aria-describedby": "message-id"
+        }}
+        message={<span id="message-id">ERRO! Email e/ou senha Inválidos</span>}
+      />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -63,6 +114,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            {...bindemail}
           />
           <TextField
             variant="outlined"
@@ -74,35 +126,22 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            {...bindpassword}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Lembre de mim"
-          />
+
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
             color="primary"
-            className={classes.submit}>
+            className={classes.submit}
+            onClick={doLogin}>
             Entrar
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Esqueceu a senha?
-              </Link>
-            </Grid>
-            <Grid item>
-              <NavLink to="/">
-                <Link href="#" variant="body2">
-                  Não tem uma conta? Registre-se
-                </Link>
-              </NavLink>
-            </Grid>
-          </Grid>
         </form>
       </div>
     </Container>
   );
 }
+
+export default withRouter(SignIn);

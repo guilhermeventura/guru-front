@@ -30,7 +30,31 @@ const classes = theme => ({
   },
 
   cover: {
-    marginTop: "-3%"
+    marginTop: "-25px"
+  },
+
+  investButton: {
+    height: "100%"
+  },
+  progressBar: {
+    height: 42,
+    backgroundColor: "#CCC",
+    width: "100%",
+    marginTop: "10px",
+    marginLeft: "-59px"
+  },
+
+  progressAmount: {
+    height: "100%",
+    backgroundColor: "#f99e55",
+    color: "#FFF",
+    lineHeight: "42px"
+  },
+  investInfo: {
+    width: "80%",
+    marginLeft: "140px",
+
+    marginBottom: theme.spacing(2)
   }
 });
 
@@ -44,6 +68,7 @@ class Dashboard extends React.Component {
     };
 
     this.handleAmmountChange = this.handleAmmountChange.bind(this);
+    this.handleAmmountBlur = this.handleAmmountBlur.bind(this);
   }
 
   handleOpenModal() {
@@ -54,15 +79,35 @@ class Dashboard extends React.Component {
     this.setState({ modalOpen: false });
   }
 
-  handleAmmountChange(evt) {
-    console.log(evt);
+  handleAmmountBlur(evt) {
+    let value = parseFloat(evt.target.value).toFixed(2);
+    var formatter = new Intl.NumberFormat("pt-BR", {
+      minimumFractionDigits: 2
+    });
+
+    if (value < 5000 || value > 50000) {
+      alert("O Valor deve estar entre R$ 5.000 e R$ 50.000");
+    }
+
     this.setState({
-      investedAmount: evt.target.value
+      investedAmount: formatter.format(value)
+    });
+  }
+  handleAmmountChange(evt) {
+    let value = evt.target.value;
+
+    this.setState({
+      investedAmount: value
     });
   }
 
   componentDidMount() {
-    getDashboardInfo();
+    getDashboardInfo().then(data => {
+      this.setState({
+        ...this.state,
+        data
+      });
+    });
   }
 
   render() {
@@ -71,8 +116,8 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <div
           style={{
-            background: `url(${headerBG}) no-repeat center center `,
-            height: 500
+            background: `url(${headerBG}) no-repeat center center / contain`,
+            height: 360
           }}
         />
         <Container maxWidth="lg">
@@ -81,13 +126,26 @@ class Dashboard extends React.Component {
             container
             justify="flex-start"
             alignItems="center">
-            <Grid item md={7}>
+            <Grid item md={2}>
               <div className={classes.avatar}>
                 <img
                   className={classes.logoGreen}
                   src={guruLogoGreen}
                   alt="GUru"
                 />
+              </div>
+            </Grid>
+            <Grid item md={5}>
+              <div className={classes.progressBar}>
+                <p
+                  className={classes.progressAmount}
+                  style={{
+                    width: this.state.data
+                      ? `${parseFloat(this.state.data.fundingPercent)}%`
+                      : "0%"
+                  }}>
+                  {this.state.data ? this.state.data.fundingPercent : "0%"}
+                </p>
               </div>
             </Grid>
             <Grid item md={3}>
@@ -98,7 +156,9 @@ class Dashboard extends React.Component {
                 variant="outlined"
                 value={this.state.investedAmount}
                 onChange={this.handleAmmountChange}
+                onBlur={this.handleAmmountBlur}
                 type="tel"
+                helperText="Min R$ 5.000 / Max R$ 50.000"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">R$</InputAdornment>
@@ -108,11 +168,48 @@ class Dashboard extends React.Component {
             </Grid>
             <Grid item md={2}>
               <Button
+                className={classes.investButton}
                 color="primary"
                 variant="contained"
                 onClick={() => this.handleOpenModal()}>
                 Investir
               </Button>
+            </Grid>
+          </Grid>
+          <Grid
+            className={classes.investInfo}
+            container
+            justify="space-around"
+            alignItems="center">
+            <Grid item>
+              <Typography variant="h4">
+                {this.state.data && this.state.data.fundingAmount}
+              </Typography>
+              <Typography>Investido</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h4">
+                {this.state.data && this.state.data.investors}
+              </Typography>
+              <Typography>Investidores</Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h6">
+                {this.state.data && this.state.data.target}
+                <Typography>Objetivo</Typography>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h6">
+                {this.state.data && this.state.data.equity}
+                <Typography>Equity</Typography>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography variant="h6">
+                {this.state.data && this.state.data.pre_money_valuation}
+                <Typography>Pre-Money Valuation</Typography>
+              </Typography>
             </Grid>
           </Grid>
           <Grid container>

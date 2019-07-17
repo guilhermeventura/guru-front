@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -19,7 +20,7 @@ import {
   getToken
 } from "./../../helpers/services";
 import { useInput } from "./../../helpers/hooks";
-
+import logo from "./../../assets/guru-logo.png";
 const useStyles = makeStyles(theme => ({
   "@global": {
     body: {
@@ -46,13 +47,20 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
     padding: theme.spacing(2),
-    fontSize: 18
+    fontSize: 18,
+    color: "#FFF",
+    fontWeight: "600"
   },
   snackError: {
     backgroundColor: theme.palette.error.dark
   },
-  loginButton: {
-    padding: theme.spacing(2.5)
+
+  spinner: {
+    color: "#fff"
+  },
+  logo: {
+    height: 80,
+    marginBottom: theme.spacing(2)
   }
 }));
 
@@ -67,8 +75,23 @@ function SignIn(props) {
   } = useInput("");
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [spinner, setSpinner] = React.useState(false);
+  const [emailError, setEmailError] = React.useState(false);
+  const [passwordError, setPasswordError] = React.useState(false);
 
   const doLogin = () => {
+    if (email == "") {
+      setEmailError(true);
+      return false;
+    }
+    if (password == "") {
+      setPasswordError(true);
+      return false;
+    }
+    setEmailError(false);
+    setPasswordError(false);
+    setSpinner(true);
+
     const data = {
       email: email,
       token: btoa(password)
@@ -79,24 +102,29 @@ function SignIn(props) {
       password: btoa(password)
     };
 
-    customerLogin(data).then(res => {
-      if (res === true) {
-        goToDashboard();
-      } else {
-        let apiToken = "";
-        getToken().then(res => {
-          apiToken = res;
+    customerLogin(data)
+      .then(res => {
+        if (res === true) {
+          goToDashboard();
+        } else {
+          let apiToken = "";
+          getToken().then(res => {
+            apiToken = res;
 
-          if (apiToken === cData.password) {
-            createCustomerBasic(cData).then(res => {
-              if (res === true) {
-                goToDashboard();
-              }
-            });
-          }
-        });
-      }
-    });
+            if (apiToken === cData.password) {
+              createCustomerBasic(cData).then(res => {
+                if (res === true) {
+                  goToDashboard();
+                }
+              });
+            }
+          });
+        }
+      })
+      .catch(error => {
+        setOpenSnackbar(true);
+        setSpinner(false);
+      });
   };
 
   const goToDashboard = () => {
@@ -121,12 +149,15 @@ function SignIn(props) {
         }}
         message={<span id="message-id">ERRO! Email e/ou senha Inválidos</span>}
       />
+
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Login
+        <img src={logo} alt="Guru Logo" className={classes.logo} />
+        <Typography component="h3" variant="body2" align="center">
+          Bem vindx ao crowdfunding dos amig(x)s do Guru. Aqui você vai poder
+          dizer o quanto quer investir, acessar documentos/informações e
+          acompanhar a evolução da rodada de investimentos. Não se preocupe, não
+          vamos coletar nenhum dado financeiro e nem realizar qualquer tipo de
+          transação.
         </Typography>
         <form className={classes.form} noValidate>
           <TextField
@@ -134,9 +165,11 @@ function SignIn(props) {
             margin="normal"
             required
             fullWidth
+            error={emailError}
             id="email"
             label="Email"
             name="email"
+            type="email"
             autoComplete="email"
             autoFocus
             {...bindemail}
@@ -146,6 +179,7 @@ function SignIn(props) {
             margin="normal"
             required
             fullWidth
+            error={passwordError}
             name="password"
             label="Senha"
             type="password"
@@ -161,7 +195,11 @@ function SignIn(props) {
             color="primary"
             className={classes.submit}
             onClick={doLogin}>
-            Entrar
+            {spinner == true ? (
+              <CircularProgress className={classes.spinner} />
+            ) : (
+              "Entrar"
+            )}
           </Button>
         </form>
       </div>

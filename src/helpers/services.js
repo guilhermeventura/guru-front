@@ -2,13 +2,13 @@ import axios from "axios";
 
 const API = {
   CREATE_CUSTOMER:
-    "http://ec2-18-219-35-248.us-east-2.compute.amazonaws.com/api/v1/crowdfun/customer/basic/create",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/basic/create",
   CUSTOMER_LOGIN:
-    "http://ec2-18-219-35-248.us-east-2.compute.amazonaws.com/api/v1/crowdfun/login",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/login",
   GET_CROWD_INFO:
-    "http://ec2-18-219-35-248.us-east-2.compute.amazonaws.com/api/v1/crowdfun/campaign",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign",
   GET_TOKEN:
-    "http://ec2-18-219-35-248.us-east-2.compute.amazonaws.com/api/v1/crowdfun/campaign/token",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign/token",
   GET_CEP: "https://viacep.com.br/ws/"
 };
 

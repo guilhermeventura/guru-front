@@ -7,8 +7,11 @@ import {
   TextField,
   Button,
   InputAdornment,
-  withStyles
+  withStyles,
+  Box
 } from "@material-ui/core";
+
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 import { getDashboardInfo } from "./../helpers/services";
 import InvestModal from "./../components/investment-modal/investment-modal";
@@ -34,13 +37,15 @@ const classes = theme => ({
   },
 
   investButton: {
-    height: "100%"
+    width: "100%",
+    paddingTop: "16px",
+    paddingBottom: "16px"
   },
   progressBar: {
     height: 42,
     backgroundColor: "#CCC",
     width: "100%",
-    marginTop: "10px",
+    marginTop: "-44px",
     marginLeft: "-59px"
   },
 
@@ -48,13 +53,17 @@ const classes = theme => ({
     height: "100%",
     backgroundColor: "#f99e55",
     color: "#FFF",
-    lineHeight: "42px"
+    lineHeight: "42px",
+    transition: "width 1s ease-out"
   },
   investInfo: {
-    width: "80%",
-    marginLeft: "140px",
-
-    marginBottom: theme.spacing(2)
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(4),
+    textAlign: "center"
+  },
+  landingBody: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(16)
   }
 });
 
@@ -64,7 +73,8 @@ class Dashboard extends React.Component {
 
     this.state = {
       modalOpen: false,
-      investedAmount: ""
+      investedAmount: "",
+      enableInvest: false
     };
 
     this.handleAmmountChange = this.handleAmmountChange.bind(this);
@@ -86,11 +96,12 @@ class Dashboard extends React.Component {
     });
 
     if (value < 5000 || value > 50000) {
-      alert("O Valor deve estar entre R$ 5.000 e R$ 50.000");
+      alert("O Valor do Investimento deve estar entre R$ 5.000 e R$ 50.000");
     }
 
     this.setState({
-      investedAmount: formatter.format(value)
+      investedAmount: formatter.format(value),
+      enableInvest: true
     });
   }
   handleAmmountChange(evt) {
@@ -114,7 +125,7 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <div
+        <Box
           style={{
             background: `url(${headerBG}) no-repeat center center / contain`,
             height: 360
@@ -125,18 +136,19 @@ class Dashboard extends React.Component {
             className={classes.cover}
             container
             justify="flex-start"
-            alignItems="center">
-            <Grid item md={2}>
-              <div className={classes.avatar}>
+            alignItems="center"
+            spacing={1}>
+            <Grid item md={2} sm={12} xs={12}>
+              <Box className={classes.avatar}>
                 <img
                   className={classes.logoGreen}
                   src={guruLogoGreen}
                   alt="GUru"
                 />
-              </div>
+              </Box>
             </Grid>
-            <Grid item md={5}>
-              <div className={classes.progressBar}>
+            <Grid item md={5} sm={12} xs={12}>
+              <Box className={classes.progressBar}>
                 <p
                   className={classes.progressAmount}
                   style={{
@@ -146,49 +158,54 @@ class Dashboard extends React.Component {
                   }}>
                   {this.state.data ? this.state.data.fundingPercent : "0%"}
                 </p>
-              </div>
+              </Box>
             </Grid>
-            <Grid item md={3}>
-              <TextField
-                id="investedAmount"
-                name="investedAmount"
-                margin="normal"
-                variant="outlined"
-                value={this.state.investedAmount}
-                onChange={this.handleAmmountChange}
-                onBlur={this.handleAmmountBlur}
-                type="tel"
-                helperText="Min R$ 5.000 / Max R$ 50.000"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">R$</InputAdornment>
-                  )
-                }}
-              />
-            </Grid>
-            <Grid item md={2}>
-              <Button
-                className={classes.investButton}
-                color="primary"
-                variant="contained"
-                onClick={() => this.handleOpenModal()}>
-                Investir
-              </Button>
+            <Grid item container md={5} sm={6} alignItems="flex-start">
+              <Grid item md={6} sm={5}>
+                <TextField
+                  id="investedAmount"
+                  name="investedAmount"
+                  margin="none"
+                  variant="outlined"
+                  value={this.state.investedAmount}
+                  onChange={this.handleAmmountChange}
+                  onBlur={this.handleAmmountBlur}
+                  type="tel"
+                  helperText="Min R$ 5.000 / Max R$ 50.000"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">R$</InputAdornment>
+                    )
+                  }}
+                />
+              </Grid>
+              <Grid item md={4} sm={5}>
+                <Button
+                  className={classes.investButton}
+                  color="primary"
+                  variant="contained"
+                  disabled={!this.state.enableInvest}
+                  onClick={() => this.handleOpenModal()}>
+                  Investir
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
           <Grid
             className={classes.investInfo}
             container
-            justify="space-around"
+            justify="space-evenly"
             alignItems="center">
             <Grid item>
-              <Typography variant="h4">
+              <Typography color="primary" variant="h4">
                 {this.state.data && this.state.data.fundingAmount}
               </Typography>
               <Typography>Investido</Typography>
             </Grid>
             <Grid item>
               <Typography variant="h4">
+                <FavoriteIcon color="primary" />
+                &nbsp;
                 {this.state.data && this.state.data.investors}
               </Typography>
               <Typography>Investidores</Typography>
@@ -212,7 +229,7 @@ class Dashboard extends React.Component {
               </Typography>
             </Grid>
           </Grid>
-          <Grid container>
+          <Grid container className={classes.landingBody}>
             <Grid item md={6}>
               <Typography variant="body1">
                 GURU é a plataforma 100% mobile que vai democratizar o acesso à
@@ -224,7 +241,7 @@ class Dashboard extends React.Component {
                 Hoje há um "muro" que impede que mais pessoas invistam em renda
                 variável, criado pelas corretoras ao oferecer tecnologia
                 defasada, custos altos e práticas obscuras. Viemos para desaﬁar
-                o status quo ddvestimentos e derrubar o muro!
+                o status quo de investimentos e derrubar o muro!
               </Typography>
             </Grid>
             <Grid item md={1} />

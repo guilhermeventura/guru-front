@@ -5,6 +5,8 @@ const API = {
     "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/basic/create",
   CREATE_PERSONAL_CUSTOMER:
     "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/personal/create",
+  CUSTOMER_CONFIRMATION:
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/confirmation/create",
   CUSTOMER_LOGIN: "https://dagalera.guru.com.vc/api/v1/crowdfun/login",
   GET_CROWD_INFO: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign",
   GET_TOKEN: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign/token",
@@ -29,7 +31,40 @@ export function createCustomerBasic(data) {
 }
 
 export function createCustomerPersonal(data) {
-  return axios.post()
+  if (!data) return;
+  return axios
+    .post(API.CREATE_PERSONAL_CUSTOMER, data, {
+      headers: { Token: "Q29udmlkYWRvQEd1cnU=" }
+    })
+
+    .then(res => {
+      if (res.status == 200) {
+        return true;
+      }
+      return false;
+    })
+    .catch(err => {
+      console.error(err);
+      return false;
+    });
+}
+
+export function customerConfirmInvest(data) {
+  if (!data) return;
+  return axios
+    .post(API.CUSTOMER_CONFIRMATION, data, {
+      headers: { Token: "Q29udmlkYWRvQEd1cnU=" }
+    })
+    .then(res => {
+      if (res.status == 200) {
+        return true;
+      }
+      return false;
+    })
+    .catch(err => {
+      console.error(err);
+      return false;
+    });
 }
 
 export function customerLogin(data) {

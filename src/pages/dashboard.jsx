@@ -96,6 +96,11 @@ const classes = theme => ({
   },
   bullets: {
     ...theme.typography.body1
+  },
+
+  mrminus8: {
+    marginLeft: "-8px",
+    justifyContent: "left"
   }
 });
 
@@ -121,6 +126,7 @@ class Dashboard extends React.Component {
 
   handleCloseModal() {
     this.setState({ modalOpen: false });
+    this.setState({ showFAQ: false });
   }
 
   handleAmmountBlur(evt) {
@@ -290,11 +296,15 @@ class Dashboard extends React.Component {
                   <Button
                     href={this.state.data.pitchdeck_link}
                     target="_blank"
+                    className={classes.mrminus8}
                     color="primary">
                     BAIXAR PITCH DECK
                   </Button>
                   <br />
-                  <Button color="primary" onClick={this.openFAQ}>
+                  <Button
+                    className={classes.mrminus8}
+                    color="primary"
+                    onClick={this.openFAQ}>
                     F.A.Q
                   </Button>
                 </Grid>
@@ -317,7 +327,9 @@ class Dashboard extends React.Component {
             investedamount={this.state.investedAmount}
           />
 
-          <Dialog open={this.state.showFAQ}>
+          <Dialog
+            open={this.state.showFAQ}
+            onClose={() => this.handleCloseModal()}>
             <DialogTitle>Perguntas Frequentes</DialogTitle>
 
             <DialogContent>

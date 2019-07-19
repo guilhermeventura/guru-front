@@ -12,12 +12,28 @@ export const guruTheme = createMuiTheme({
   },
   typography: {
     fontFamily: "Montserrat, Roboto, sans-serif",
-    button: { fontFamily: "Montserrat, Roboto, sans-serif" },
+    button: {
+      fontFamily: "Montserrat, Roboto, sans-serif",
+      textTransform: "none"
+    },
     h1: { fontFamily: "Montserrat, Roboto, sans-serif" },
     h2: { fontFamily: "Montserrat, Roboto, sans-serif" },
     h3: { fontFamily: "Montserrat, Roboto, sans-serif" },
     h4: { fontFamily: "Montserrat, Roboto, sans-serif" },
     h5: { fontFamily: "Montserrat, Roboto, sans-serif" },
     h6: { fontFamily: "Montserrat, Roboto, sans-serif" }
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: "0"
+      }
+    },
+    PrivateNotchedOutline: {
+      root: {
+        borderRadius: "0",
+        borderWidth: "3px"
+      }
+    }
   }
 });

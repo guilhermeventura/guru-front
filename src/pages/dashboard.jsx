@@ -39,16 +39,26 @@ const classes = theme => ({
   investButton: {
     width: "100%",
     paddingTop: "16px",
-    paddingBottom: "16px"
+    paddingBottom: "16px",
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: 30
+    }
   },
   progressBar: {
     height: 42,
     backgroundColor: "#CCC",
     width: "100%",
-    marginTop: "-44px",
-    marginLeft: "-59px"
-  },
 
+    [theme.breakpoints.up("md")]: {
+      marginTop: "-44px",
+      marginLeft: "-59px"
+    }
+  },
+  order3sm: {
+    [theme.breakpoints.down("sm")]: {
+      order: 3
+    }
+  },
   progressAmount: {
     height: "100%",
     backgroundColor: "#f99e55",
@@ -127,7 +137,7 @@ class Dashboard extends React.Component {
       <React.Fragment>
         <Box
           style={{
-            background: `url(${headerBG}) no-repeat center center / contain`,
+            background: `url(${headerBG}) no-repeat top center / cover`,
             height: 360
           }}
         />
@@ -147,7 +157,7 @@ class Dashboard extends React.Component {
                 />
               </Box>
             </Grid>
-            <Grid item md={5} sm={12} xs={12}>
+            <Grid item md={5} sm={12} xs={12} className={classes.order3sm}>
               <Box className={classes.progressBar}>
                 <p
                   className={classes.progressAmount}
@@ -160,8 +170,8 @@ class Dashboard extends React.Component {
                 </p>
               </Box>
             </Grid>
-            <Grid item container md={5} sm={6} alignItems="flex-start">
-              <Grid item md={6} sm={5}>
+            <Grid item container md={5} xs={12} alignItems="flex-start">
+              <Grid item md={6} xs={7}>
                 <TextField
                   id="investedAmount"
                   name="investedAmount"
@@ -179,7 +189,7 @@ class Dashboard extends React.Component {
                   }}
                 />
               </Grid>
-              <Grid item md={4} sm={5}>
+              <Grid item md={4} xs={4}>
                 <Button
                   className={classes.investButton}
                   color="primary"
@@ -194,15 +204,15 @@ class Dashboard extends React.Component {
           <Grid
             className={classes.investInfo}
             container
-            justify="space-evenly"
+            justify="flex-start"
             alignItems="center">
-            <Grid item>
+            <Grid item md={3} xs={6}>
               <Typography color="primary" variant="h4">
                 {this.state.data && this.state.data.fundingAmount}
               </Typography>
               <Typography>Investido</Typography>
             </Grid>
-            <Grid item>
+            <Grid md={3} item xs={6}>
               <Typography variant="h4">
                 <FavoriteIcon color="primary" />
                 &nbsp;
@@ -210,19 +220,19 @@ class Dashboard extends React.Component {
               </Typography>
               <Typography>Investidores</Typography>
             </Grid>
-            <Grid item>
+            <Grid md={2} item xs={6}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.target}
                 <Typography>Objetivo</Typography>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid md={2} item xs={6}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.equity}
                 <Typography>Equity</Typography>
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid md={2} item xs={6}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.pre_money_valuation}
                 <Typography>Pre-Money Valuation</Typography>

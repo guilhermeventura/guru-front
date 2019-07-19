@@ -53,8 +53,7 @@ const classes = theme => ({
   },
 
   paper: {
-    margin: theme.spacing(2),
-    color: "#fff"
+    margin: theme.spacing(2)
   }
 });
 
@@ -109,8 +108,8 @@ class InvestModal extends React.Component {
         {...this.props}
         fullWidth={true}
         fullScreen={this.props.fullScreen}
-        disableBackdropClick
-        disableEscapeKeyDown
+        // disableBackdropClick
+        // disableEscapeKeyDown
         maxWidth="sm">
         <DialogContent className={activeStep === 6 ? classes.congrats : ""}>
           {/* <DialogContentText>Valor investido: R$ 50.000,00</DialogContentText> */}
@@ -149,6 +148,7 @@ class InvestModal extends React.Component {
                 };
                 customerConfirmInvest(cci).then(res => {
                   console.log(res);
+                  this.setState({ activeStep: 6 });
                 });
               });
             }}>
@@ -399,7 +399,12 @@ class InvestModal extends React.Component {
 
                 {activeStep === 6 && (
                   <>
-                    <Box style={{ marginTop: 10, marginBottom: 10 }}>
+                    <Box
+                      style={{
+                        marginTop: 10,
+                        marginBottom: 10,
+                        color: "#FFF"
+                      }}>
                       <Typography variant="h5">PARABÉNS!</Typography>
                       <img
                         src={congratsIMG}

@@ -15,7 +15,7 @@ history.listen((location, action) => {
   console.log(location.pathname);
 });
 
-React.pageview("/home");
+ReactGA.pageview("/home");
 
 const AppRoot = () => {
   return (

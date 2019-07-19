@@ -34,6 +34,11 @@ export const guruTheme = createMuiTheme({
         borderRadius: "0",
         borderWidth: "3px"
       }
+    },
+    MuiExpansionPanel: {
+      root: {
+        boxShadow: "none"
+      }
     }
   }
 });

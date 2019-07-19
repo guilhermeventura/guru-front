@@ -86,10 +86,10 @@ class InvestModal extends React.Component {
       activeStep: 1,
       values: props.initialValues
     };
-    // const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
     this.handleNext = this.handleNext.bind(this);
     this.handlePrev = this.handlePrev.bind(this);
+    this.renderNextButton = this.renderNextButton.bind(this);
   }
 
   handleNext() {
@@ -98,6 +98,27 @@ class InvestModal extends React.Component {
 
   handlePrev() {
     this.setState({ activeStep: this.state.activeStep - 1 });
+  }
+
+  renderNextButton() {
+    const { values, activeStep } = this.state;
+    // if (values) {
+    //   switch (activeStep) {
+    //     case 1:
+    //       let disabled =
+    //         values.fullname == "" || values.telephone == "" ? true : false;
+    //       return (
+    //         <Button
+    //           variant="contained"
+    //           color="primary"
+    //           type="button"
+    //           disabled={disabled}
+    //           onClick={this.handleNext}>
+    //           Próximo
+    //         </Button>
+    //       );
+    //   }
+    // }
   }
 
   render() {
@@ -113,21 +134,22 @@ class InvestModal extends React.Component {
         maxWidth="sm">
         <DialogContent className={activeStep === 6 ? classes.congrats : ""}>
           {/* <DialogContentText>Valor investido: R$ 50.000,00</DialogContentText> */}
-          {activeStep === 1 && (
-            <Box className={classes.paper}>
+          <Box className={classes.paper}>
+            {activeStep < 5 && (
               <Typography variant="h5" className={classes.modalTitle}>
                 Valor Investido:{" "}
                 <span className={classes.modalAmount}>
                   R$ {this.props.investedamount}
                 </span>
               </Typography>
-
+            )}
+            {activeStep === 1 && (
               <Typography variant="h5" className={classes.modalTitle}>
                 Precisamos de alguns dados para agilizar o contrato que será
                 enviado ao final da rodada:
               </Typography>
-            </Box>
-          )}
+            )}
+          </Box>
 
           <Formik
             enableReinitialize={true}

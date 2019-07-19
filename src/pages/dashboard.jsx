@@ -1,5 +1,7 @@
 import React from "react";
 
+import ReactZenDeskChat from "@inlightmedia/react-zendesk-chat";
+
 import {
   Container,
   Grid,
@@ -8,10 +10,17 @@ import {
   Button,
   InputAdornment,
   withStyles,
-  Box
+  Box,
+  Dialog,
+  DialogTitle,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+  DialogContent
 } from "@material-ui/core";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { getDashboardInfo } from "./../helpers/services";
 import InvestModal from "./../components/investment-modal/investment-modal";
@@ -64,7 +73,9 @@ const classes = theme => ({
     backgroundColor: "#f99e55",
     color: "#FFF",
     lineHeight: "42px",
-    transition: "width 1s ease-out"
+    transition: "width 1s ease-out",
+    textAlign: "right",
+    paddingRight: 20
   },
   investInfo: {
     marginTop: theme.spacing(2),
@@ -74,6 +85,17 @@ const classes = theme => ({
   landingBody: {
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(16)
+  },
+  faqHeader: {
+    fontSize: 12,
+    fontWeight: "bold"
+  },
+  faqContent: {
+    fontSize: 11,
+    fontWeight: "normal"
+  },
+  bullets: {
+    ...theme.typography.body1
   }
 });
 
@@ -84,11 +106,13 @@ class Dashboard extends React.Component {
     this.state = {
       modalOpen: false,
       investedAmount: "",
-      enableInvest: false
+      enableInvest: false,
+      zopimElement: !!document.getElementsByClassName("zopim")[0]
     };
 
     this.handleAmmountChange = this.handleAmmountChange.bind(this);
     this.handleAmmountBlur = this.handleAmmountBlur.bind(this);
+    this.openFAQ = this.openFAQ.bind(this);
   }
 
   handleOpenModal() {
@@ -100,19 +124,22 @@ class Dashboard extends React.Component {
   }
 
   handleAmmountBlur(evt) {
-    let value = parseFloat(evt.target.value).toFixed(2);
+    console.log("before", evt.target.value);
+    let value = evt.target.value.replace(".", "");
+    value = value.replace(",", "");
+    value = parseFloat(value).toFixed(2);
     var formatter = new Intl.NumberFormat("pt-BR", {
       minimumFractionDigits: 2
     });
-
+    console.log("after", value);
     if (value < 5000 || value > 50000) {
       alert("O Valor do Investimento deve estar entre R$ 5.000 e R$ 50.000");
+    } else {
+      this.setState({
+        investedAmount: formatter.format(value),
+        enableInvest: true
+      });
     }
-
-    this.setState({
-      investedAmount: formatter.format(value),
-      enableInvest: true
-    });
   }
   handleAmmountChange(evt) {
     let value = evt.target.value;
@@ -120,6 +147,10 @@ class Dashboard extends React.Component {
     this.setState({
       investedAmount: value
     });
+  }
+
+  openFAQ() {
+    this.setState({ showFAQ: true });
   }
 
   componentDidMount() {
@@ -142,6 +173,9 @@ class Dashboard extends React.Component {
           }}
         />
         <Container maxWidth="lg">
+          {!this.state.zopimElement && (
+            <ReactZenDeskChat appID="3OwNspqe8v1oU5lMSBXbbEDxGx1QLxTA" />
+          )}
           <Grid
             className={classes.cover}
             container
@@ -239,46 +273,179 @@ class Dashboard extends React.Component {
               </Typography>
             </Grid>
           </Grid>
+
           <Grid container className={classes.landingBody}>
-            <Grid item md={6}>
-              <Typography variant="body1">
-                GURU é a plataforma 100% mobile que vai democratizar o acesso à
-                Bolsa de Valores oferecendo um app (iOS e Android) com design
-                moderno, intuitivo, sem corretagem e sem depósito mínimo.
-              </Typography>
-              <br />
-              <Typography variant="body1">
-                Hoje há um "muro" que impede que mais pessoas invistam em renda
-                variável, criado pelas corretoras ao oferecer tecnologia
-                defasada, custos altos e práticas obscuras. Viemos para desaﬁar
-                o status quo de investimentos e derrubar o muro!
-              </Typography>
-            </Grid>
-            <Grid item md={1} />
-            <Grid item md={5}>
-              <ul>
-                <li>
+            {this.state.data && (
+              <>
+                <Grid item md={6}>
                   <Typography variant="body1">
-                    Investimento simples e de graça
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: this.state.data.landing_text
+                      }}
+                    />
                   </Typography>
-                </li>
-                <li>
-                  <Typography variant="body1">Sem corretagem</Typography>
-                </li>
-                <li>
-                  <Typography variant="body1">Sem depósito mínimo</Typography>
-                </li>
-                <li>
-                  <Typography variant="body1">Sem Pegadinhas</Typography>
-                </li>
-              </ul>
-            </Grid>
+
+                  <br />
+                  <Button
+                    href={this.state.data.pitchdeck_link}
+                    target="_blank"
+                    color="primary">
+                    BAIXAR PITCH DECK
+                  </Button>
+                  <br />
+                  <Button color="primary" onClick={this.openFAQ}>
+                    F.A.Q
+                  </Button>
+                </Grid>
+
+                <Grid item md={1} />
+                <Grid item md={5}>
+                  <div
+                    className={classes.bullets}
+                    dangerouslySetInnerHTML={{
+                      __html: this.state.data.landing_bullets
+                    }}
+                  />
+                </Grid>
+              </>
+            )}
           </Grid>
           <InvestModal
             open={this.state.modalOpen}
             onClose={() => this.handleCloseModal()}
             investedamount={this.state.investedAmount}
           />
+
+          <Dialog open={this.state.showFAQ}>
+            <DialogTitle>Perguntas Frequentes</DialogTitle>
+
+            <DialogContent>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual o risco do investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    O investimento em startups é considerado de alto risco, pois
+                    as empresas operam em ambiente de extrema incerteza. Nunca
+                    invista um dinheiro que você pode precisar no curto prazo.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual a liquidez do meu investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Dificilmente você poderá vender a sua participação no curto
+                    prazo. Em geral, a opção de saída do investidor anjo aparece
+                    com a entrada de grandes fundos, com a venda da empresa ou
+                    abertura de capital na Bolsa.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Se bater a meta e tiver mais de 100% o que acontece?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Poderá haver um rateio entre os investidores ou aumentarmos
+                    o tamanho do rodada para acomodar a todos.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual é o tamanho da rodada de investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    O valor total da captação é de R$ 2.500.000.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    De onde virá o restante do investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Fundos de venture capital, parceiros estratégicos e
+                    investidores profissionais.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual percentual da empresa eu vou ter?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Dinheiro investido ÷ (Valuation Pre-Money + Captação da
+                    Rodada)
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual a data de lançamento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Estimamos que o desenvolvimento leve 9 meses para a versão
+                    beta e 12 meses para o lançamento oficial.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Como faço para transferir o dinheiro do investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    O investidor terá que fazer uma TED do valor comprometido
+                    para a conta da Guru em até 5 dias úteis após a assinatura
+                    do contrato
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Qual será o instrumento do investimento?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    O investimento será realizado por meio de um Instrumento de
+                    Mútuo Conversível. Essa é a prática mais comum para
+                    investimentos em startups, uma vez que esse tipo de contrato
+                    protege o investidor de riscos associados ao estágio inicial
+                    da empresa.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            </DialogContent>
+          </Dialog>
         </Container>
       </React.Fragment>
     );

@@ -11,6 +11,7 @@ import { Form, Field, Formik } from "formik";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { Box, Link } from "@material-ui/core";
 import * as Yup from "yup";
 import {
   customerLogin,
@@ -192,6 +193,16 @@ function SignIn(props) {
               </Form>
             )}
           </Formik>
+          <Box mt={5}>
+            <Typography variant="body2" color="textSecondary" align="center">
+              Essa página é só para amigos convidados para o crowdfunding, por
+              favor não envie para terceiros. Qualquer dúvida é só chamar no
+              email&nbsp;
+              <Link color="primary" href="https://material-ui.com/">
+                felipe@guru.com.vc
+              </Link>
+            </Typography>
+          </Box>
         </Container>
       </div>
     </Container>

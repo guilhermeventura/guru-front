@@ -16,7 +16,8 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  DialogContent
+  DialogContent,
+  Hidden
 } from "@material-ui/core";
 
 import FavoriteIcon from "@material-ui/icons/Favorite";
@@ -75,7 +76,8 @@ const classes = theme => ({
     lineHeight: "42px",
     transition: "width 1s ease-out",
     textAlign: "right",
-    paddingRight: 20
+    paddingRight: 20,
+    maxWidth: "100%"
   },
   investInfo: {
     marginTop: theme.spacing(2),
@@ -101,6 +103,13 @@ const classes = theme => ({
   mrminus8: {
     marginLeft: "-8px",
     justifyContent: "left"
+  },
+
+  spaceInMobile: {
+    [theme.breakpoints.down("sm")]: {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2)
+    }
   }
 });
 
@@ -121,7 +130,12 @@ class Dashboard extends React.Component {
   }
 
   handleOpenModal() {
+    if (this.state.investedAmount == "") {
+      alert("Informe o Valor a ser investido");
+      return false;
+    }
     this.setState({ modalOpen: true });
+    this.props.history.push("/dashboard/investir");
   }
 
   handleCloseModal() {
@@ -130,6 +144,8 @@ class Dashboard extends React.Component {
   }
 
   handleAmmountBlur(evt) {
+    if (!evt.target.value) return;
+
     console.log("before", evt.target.value);
     let value = evt.target.value.replace(".", "");
     value = value.replace(",", "");
@@ -179,9 +195,11 @@ class Dashboard extends React.Component {
           }}
         />
         <Container maxWidth="lg">
-          {!this.state.zopimElement && (
-            <ReactZenDeskChat appID="3OwNspqe8v1oU5lMSBXbbEDxGx1QLxTA" />
-          )}
+          <Hidden smDown>
+            {!this.state.zopimElement && (
+              <ReactZenDeskChat appID="3OwNspqe8v1oU5lMSBXbbEDxGx1QLxTA" />
+            )}
+          </Hidden>
           <Grid
             className={classes.cover}
             container
@@ -221,7 +239,7 @@ class Dashboard extends React.Component {
                   onChange={this.handleAmmountChange}
                   onBlur={this.handleAmmountBlur}
                   type="tel"
-                  helperText="Min R$ 5.000 / Max R$ 50.000"
+                  helperText="Mín R$ 5.000 / Máx R$ 50.000"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">R$</InputAdornment>
@@ -234,7 +252,7 @@ class Dashboard extends React.Component {
                   className={classes.investButton}
                   color="primary"
                   variant="contained"
-                  disabled={!this.state.enableInvest}
+                  // disabled={!this.state.enableInvest}
                   onClick={() => this.handleOpenModal()}>
                   Investir
                 </Button>
@@ -244,15 +262,15 @@ class Dashboard extends React.Component {
           <Grid
             className={classes.investInfo}
             container
-            justify="flex-start"
+            justify="center"
             alignItems="center">
-            <Grid item md={3} xs={6}>
+            <Grid item md={3} xs={6} className={classes.spaceInMobile}>
               <Typography color="primary" variant="h4">
                 {this.state.data && this.state.data.fundingAmount}
               </Typography>
               <Typography>Investido</Typography>
             </Grid>
-            <Grid md={3} item xs={6}>
+            <Grid md={3} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h4">
                 <FavoriteIcon color="primary" />
                 &nbsp;
@@ -260,19 +278,19 @@ class Dashboard extends React.Component {
               </Typography>
               <Typography>Investidores</Typography>
             </Grid>
-            <Grid md={2} item xs={6}>
+            <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.target}
                 <Typography>Objetivo</Typography>
               </Typography>
             </Grid>
-            <Grid md={2} item xs={6}>
+            <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.equity}
                 <Typography>Equity</Typography>
               </Typography>
             </Grid>
-            <Grid md={2} item xs={6}>
+            <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.pre_money_valuation}
                 <Typography>Pre-Money Valuation</Typography>

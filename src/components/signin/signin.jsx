@@ -5,19 +5,18 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import { TextField } from "formik-material-ui";
 import Snackbar from "@material-ui/core/Snackbar";
-
+import { Form, Field, Formik } from "formik";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-
+import * as Yup from "yup";
 import {
   customerLogin,
   createCustomerBasic,
   getToken
 } from "./../../helpers/services";
-import { useInput } from "./../../helpers/hooks";
 import logo from "./../../assets/guru-logo.png";
 const useStyles = makeStyles(theme => ({
   "@global": {
@@ -62,68 +61,53 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const SignInSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("E-mail inválido")
+    .required("Obrigatório"),
+  password: Yup.string().required("Obrigatório")
+});
 
 function SignIn(props) {
   const classes = useStyles();
 
-  const { value: email, bind: bindemail, reset: resetemail } = useInput("");
-  const {
-    value: password,
-    bind: bindpassword,
-    reset: resetpassword
-  } = useInput("");
-
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [spinner, setSpinner] = React.useState(false);
-  const [emailError, setEmailError] = React.useState(false);
-  const [passwordError, setPasswordError] = React.useState(false);
 
-  const doLogin = () => {
-    if (email == "") {
-      setEmailError(true);
-      return false;
-    }
-    if (password == "") {
-      setPasswordError(true);
-      return false;
-    }
-    setEmailError(false);
-    setPasswordError(false);
+  const doLogin = values => {
     setSpinner(true);
 
     const data = {
-      email: email,
-      token: btoa(password)
+      email: values.email,
+      token: btoa(values.password)
     };
 
     const cData = {
-      email: email,
-      password: btoa(password)
+      email: values.email,
+      password: btoa(values.password)
     };
 
-    customerLogin(data)
-      .then(res => {
-        if (res === true) {
-          goToDashboard();
-        } else {
-          let apiToken = "";
-          getToken().then(res => {
-            apiToken = res;
+    customerLogin(data).then(res => {
+      if (res === true) {
+        goToDashboard();
+      } else {
+        let apiToken = "";
+        getToken().then(res => {
+          apiToken = res;
 
-            if (apiToken === cData.password) {
-              createCustomerBasic(cData).then(res => {
-                if (res === true) {
-                  goToDashboard();
-                }
-              });
-            }
-          });
-        }
-      })
-      .catch(error => {
-        setOpenSnackbar(true);
+          if (apiToken === cData.password) {
+            createCustomerBasic(cData).then(res => {
+              if (res === true) {
+                goToDashboard();
+              }
+            });
+          }
+        });
+
         setSpinner(false);
-      });
+        setOpenSnackbar(true);
+      }
+    });
   };
 
   const goToDashboard = () => {
@@ -133,7 +117,7 @@ function SignIn(props) {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Snackbar
         anchorOrigin={{
@@ -158,49 +142,57 @@ function SignIn(props) {
           vamos coletar nenhum dado financeiro e nem realizar qualquer tipo de
           transação.
         </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            error={emailError}
-            id="email"
-            label="Email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            autoFocus
-            {...bindemail}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            error={passwordError}
-            name="password"
-            label="Senha"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            {...bindpassword}
-          />
+        <Container maxWidth={"xs"}>
+          <Formik
+            validationSchema={SignInSchema}
+            onSubmit={(values, { resetForm, setSubmitting }) => {
+              doLogin(values);
 
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-            onClick={doLogin}>
-            {spinner == true ? (
-              <CircularProgress className={classes.spinner} />
-            ) : (
-              "Entrar"
+              setSubmitting(false);
+            }}>
+            {({ handleSubmit }) => (
+              <Form>
+                <Field
+                  variant="outlined"
+                  margin="normal"
+                  id="email"
+                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  autoFocus
+                  fullWidth
+                  component={TextField}
+                />
+                <Field
+                  variant="outlined"
+                  margin="normal"
+                  id="email"
+                  name="password"
+                  label="Senha"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  fullWidth
+                  component={TextField}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                  onClick={handleSubmit}>
+                  {spinner == true ? (
+                    <CircularProgress className={classes.spinner} />
+                  ) : (
+                    "Entrar"
+                  )}
+                </Button>
+              </Form>
             )}
-          </Button>
-        </form>
+          </Formik>
+        </Container>
       </div>
     </Container>
   );

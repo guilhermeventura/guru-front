@@ -77,6 +77,8 @@ export function customerLogin(data) {
     })
     .then(res => {
       if (res.status == 200) {
+        localStorage.setItem("guruEmail", data.email);
+
         return true;
       }
       return false;

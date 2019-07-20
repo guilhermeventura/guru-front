@@ -176,6 +176,7 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
+    console.log(localStorage.getItem('guruEmail'))
     getDashboardInfo().then(data => {
       this.setState({
         ...this.state,

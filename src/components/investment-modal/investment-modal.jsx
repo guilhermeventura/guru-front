@@ -202,16 +202,18 @@ class InvestModal extends React.Component {
         disableBackdropClick
         disableEscapeKeyDown
         maxWidth="sm">
-        <DialogTitle>
-          {this.props.onClose ? (
-            <IconButton
-              aria-label="Close"
-              className={classes.closeButton}
-              onClick={this.props.onClose}>
-              <CloseIcon />
-            </IconButton>
-          ) : null}
-        </DialogTitle>
+        {activeStep !== 6 && (
+          <DialogTitle>
+            {this.props.onClose ? (
+              <IconButton
+                aria-label="Close"
+                className={classes.closeButton}
+                onClick={this.props.onClose}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </DialogTitle>
+        )}
         <DialogContent className={activeStep === 6 ? classes.congrats : ""}>
           {/* <DialogContentText>Valor investido: R$ 50.000,00</DialogContentText> */}
           <Box className={classes.paper}>
@@ -550,9 +552,8 @@ export default withStyles(classes)(
     validationSchema: InvestModalSchema,
 
     handleSubmit: (values, { props, state, setStatus }) => {
-      console.log("aaaaaaaaaaa", props, state);
       let sv = values;
-      sv.email = "tom@guru.com.vc";
+      sv.email = localStorage.getItem("guruEmail");
       sv.place = values.place || "";
 
       delete sv.classes;

@@ -60,10 +60,15 @@ const classes = theme => ({
     height: 42,
     backgroundColor: "#CCC",
     width: "100%",
-
+    borderTopRightRadius: "20px",
+    borderBottomRightRadius: "20px",
     [theme.breakpoints.up("md")]: {
       marginTop: "-44px",
       marginLeft: "-59px"
+    },
+
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 20
     }
   },
   order3sm: {
@@ -79,7 +84,29 @@ const classes = theme => ({
     transition: "width 1s ease-out",
     textAlign: "right",
     paddingRight: 20,
-    maxWidth: "100%"
+    maxWidth: "100%",
+    borderTopRightRadius: "20px",
+    borderBottomRightRadius: "20px",
+
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 20
+    }
+  },
+  progressAmountFull: {
+    height: "100%",
+    backgroundColor: theme.palette.primary.main,
+    color: "#FFF",
+    lineHeight: "42px",
+    transition: "width 1s ease-out",
+    textAlign: "right",
+    paddingRight: 20,
+    maxWidth: "100%",
+    borderTopRightRadius: "20px",
+    borderBottomRightRadius: "20px",
+
+    [theme.breakpoints.down("sm")]: {
+      borderRadius: 20
+    }
   },
   investInfo: {
     marginTop: theme.spacing(2),
@@ -252,7 +279,11 @@ class Dashboard extends React.Component {
             <Grid item md={5} sm={12} xs={12} className={classes.order3sm}>
               <Box className={classes.progressBar}>
                 <p
-                  className={classes.progressAmount}
+                  className={
+                    this.state.data && this.state.data.fundingPercent > "100"
+                      ? classes.progressAmountFull
+                      : classes.progressAmount
+                  }
                   style={{
                     width: this.state.data
                       ? `${parseFloat(this.state.data.fundingPercent)}%`
@@ -281,6 +312,7 @@ class Dashboard extends React.Component {
                   }}
                 />
               </Grid>
+              <Grid item md={1} />
               <Grid item md={4} xs={4}>
                 <Button
                   className={classes.investButton}

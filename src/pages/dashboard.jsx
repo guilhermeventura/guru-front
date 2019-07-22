@@ -35,6 +35,8 @@ const classes = theme => ({
     border: "2px solid #000",
     textAlign: "center",
     lineHeight: 12,
+    position: "relative",
+    zIndex: "20",
     backgroundColor: "#FFF"
   },
 
@@ -122,6 +124,8 @@ const classes = theme => ({
   bpcover: {
     background: `url(${headerBG}) no-repeat top center / cover`,
     height: 360,
+    position: "relative",
+    zIndex: "2",
 
     [theme.breakpoints.down("sm")]: {
       background: `url(${headerBG}) no-repeat -350px top  / cover`
@@ -130,13 +134,13 @@ const classes = theme => ({
   daysleft: {
     color: "#FFF",
     position: "absolute",
-    right: "224px",
+    right: "174px",
     top: "290px",
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {
       top: 210,
       width: 110,
-      right: 156
+      right: 120
     }
   }
 });
@@ -344,7 +348,7 @@ class Dashboard extends React.Component {
                 </Grid>
 
                 <Grid item md={1} />
-                <Grid item md={5}>
+                <Grid item md={5} xs={12}>
                   <div
                     className={classes.bullets}
                     dangerouslySetInnerHTML={{

@@ -97,7 +97,9 @@ const classes = theme => ({
     fontWeight: "normal"
   },
   bullets: {
-    ...theme.typography.body1
+    ...theme.typography.body1,
+
+    padding: 0
   },
 
   mrminus8: {
@@ -109,6 +111,32 @@ const classes = theme => ({
     [theme.breakpoints.down("sm")]: {
       marginTop: theme.spacing(2),
       marginBottom: theme.spacing(2)
+    }
+  },
+  faqbtn: {
+    width: "60%",
+    [theme.breakpoints.down("sm")]: {
+      width: "100%"
+    }
+  },
+  bpcover: {
+    background: `url(${headerBG}) no-repeat top center / cover`,
+    height: 360,
+
+    [theme.breakpoints.down("sm")]: {
+      background: `url(${headerBG}) no-repeat -350px top  / cover`
+    }
+  },
+  daysleft: {
+    color: "#FFF",
+    position: "absolute",
+    right: "224px",
+    top: "290px",
+    textAlign: "center",
+    [theme.breakpoints.down("sm")]: {
+      top: 210,
+      width: 110,
+      right: 156
     }
   }
 });
@@ -176,7 +204,6 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    console.log(localStorage.getItem('guruEmail'))
     getDashboardInfo().then(data => {
       this.setState({
         ...this.state,
@@ -189,12 +216,14 @@ class Dashboard extends React.Component {
     const { classes } = this.props;
     return (
       <React.Fragment>
-        <Box
-          style={{
-            background: `url(${headerBG}) no-repeat top center / cover`,
-            height: 360
-          }}
-        />
+        <Box className={classes.bpcover}>
+          {this.state.data && (
+            <div className={classes.daysleft}>
+              <Typography variant="h5">{this.state.data.daysLeft}</Typography>
+              <Typography variant="body1">dias restantes</Typography>
+            </div>
+          )}
+        </Box>
         <Container maxWidth="lg">
           <Hidden smDown>
             {!this.state.zopimElement && (
@@ -312,20 +341,6 @@ class Dashboard extends React.Component {
                   </Typography>
 
                   <br />
-                  <Button
-                    href={this.state.data.pitchdeck_link}
-                    target="_blank"
-                    className={classes.mrminus8}
-                    color="primary">
-                    BAIXAR PITCH DECK
-                  </Button>
-                  <br />
-                  <Button
-                    className={classes.mrminus8}
-                    color="primary"
-                    onClick={this.openFAQ}>
-                    F.A.Q
-                  </Button>
                 </Grid>
 
                 <Grid item md={1} />
@@ -336,6 +351,23 @@ class Dashboard extends React.Component {
                       __html: this.state.data.landing_bullets
                     }}
                   />
+                  <Button
+                    className={classes.faqbtn}
+                    variant="outlined"
+                    href={this.state.data.pitchdeck_link}
+                    target="_blank"
+                    color="primary">
+                    BAIXAR PITCH DECK
+                  </Button>
+                  <br />
+                  <br />
+                  <Button
+                    className={classes.faqbtn}
+                    variant="outlined"
+                    color="primary"
+                    onClick={this.openFAQ}>
+                    F.A.Q
+                  </Button>
                 </Grid>
               </>
             )}

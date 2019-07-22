@@ -280,7 +280,7 @@ class Dashboard extends React.Component {
               <Box className={classes.progressBar}>
                 <p
                   className={
-                    this.state.data && this.state.data.fundingPercent > "100"
+                    this.state.data && parseFloat(this.state.data.fundingPercent) >= 100
                       ? classes.progressAmountFull
                       : classes.progressAmount
                   }

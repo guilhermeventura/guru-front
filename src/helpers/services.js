@@ -34,7 +34,7 @@ export function createCustomerPersonal(data) {
   if (!data) return;
   return axios
     .post(API.CREATE_PERSONAL_CUSTOMER, data, {
-      headers: { Token: ZGVycnViZW9tdXJv" }
+      headers: { Token: "ZGVycnViZW9tdXJv" }
     })
 
     .then(res => {
@@ -53,7 +53,7 @@ export function customerConfirmInvest(data) {
   if (!data) return;
   return axios
     .post(API.CUSTOMER_CONFIRMATION, data, {
-      headers: { Token: ZGVycnViZW9tdXJv" }
+      headers: { Token: "ZGVycnViZW9tdXJv" }
     })
     .then(res => {
       if (res.status == 200) {
@@ -71,7 +71,7 @@ export function customerLogin(data) {
   if (!data) return;
   return axios
     .post(API.CUSTOMER_LOGIN, {
-      headers: { Token: ZGVycnViZW9tdXJv" }
+      headers: { Token: "ZGVycnViZW9tdXJv" }
       ...data
     })
     .then(res => {
@@ -97,7 +97,7 @@ export function getToken() {
 export function getDashboardInfo() {
   return axios
     .get(API.GET_CROWD_INFO, {
-      headers: { Token: ZGVycnViZW9tdXJv" }
+      headers: { Token: "ZGVycnViZW9tdXJv" }
     })
     .then(res => {
       return res.data;

@@ -52,8 +52,14 @@ export function createCustomerPersonal(data) {
 export function customerConfirmInvest(data) {
   if (!data) return;
   return axios
+  
+  let token = "";
+
+  getToken().then(res => {
+    token = res;
+  })
     .post(API.CUSTOMER_CONFIRMATION, data, {
-      headers: { Token: `${data.password}` },
+      headers: { Token: token },
     })
     .then(res => {
       if (res.status == 200) {
@@ -69,10 +75,13 @@ export function customerConfirmInvest(data) {
 
 export function customerLogin(data) {
   if (!data) return;
-
   return axios
+  
+   getToken().then(res => {
+    token = res;
+  })
     .post(API.CUSTOMER_LOGIN, {
-      headers: { Token: `${data.password}` },
+      headers: { Token: token },
       ...data
     })
     .then(res => {
@@ -97,8 +106,14 @@ export function getToken() {
 
 export function getDashboardInfo() {
   return axios
+  
+  let token = "";
+
+  getToken().then(res => {
+    token = res;
+  })
     .get(API.GET_CROWD_INFO, {
-      headers: { Token: `${data.password}` },
+      headers: { Token: token },
     })
     .then(res => {
       return res.data;

@@ -34,7 +34,7 @@ export function createCustomerPersonal(data) {
   if (!data) return;
   return axios
     .post(API.CREATE_PERSONAL_CUSTOMER, data, {
-      headers: { Token: "Q29udmlkYWRvQEd1cnU=" }
+      headers: { Token: `${data.password}` },
     })
 
     .then(res => {
@@ -53,7 +53,7 @@ export function customerConfirmInvest(data) {
   if (!data) return;
   return axios
     .post(API.CUSTOMER_CONFIRMATION, data, {
-      headers: { Token: "Q29udmlkYWRvQEd1cnU=" }
+      headers: { Token: `${data.password}` },
     })
     .then(res => {
       if (res.status == 200) {
@@ -72,7 +72,7 @@ export function customerLogin(data) {
 
   return axios
     .post(API.CUSTOMER_LOGIN, {
-      headers: { Token: data.token },
+      headers: { Token: `${data.password}` },
       ...data
     })
     .then(res => {
@@ -98,7 +98,7 @@ export function getToken() {
 export function getDashboardInfo() {
   return axios
     .get(API.GET_CROWD_INFO, {
-      headers: { Token: "Q29udmlkYWRvQEd1cnU=" }
+      headers: { Token: `${data.password}` },
     })
     .then(res => {
       return res.data;

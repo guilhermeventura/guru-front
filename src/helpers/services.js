@@ -33,8 +33,14 @@ export function createCustomerBasic(data) {
 export function createCustomerPersonal(data) {
   if (!data) return;
   return axios
+  
+  let token = "";
+
+  getToken().then(res => {
+    token = res;
+  })
     .post(API.CREATE_PERSONAL_CUSTOMER, data, {
-      headers: { Token: `${data.password}` },
+      headers: { Token: token },
     })
 
     .then(res => {

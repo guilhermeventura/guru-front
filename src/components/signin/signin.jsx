@@ -137,11 +137,10 @@ function SignIn(props) {
       <div className={classes.paper}>
         <img src={logo} alt="Guru Logo" className={classes.logo} />
         <Typography component="h3" variant="body2" align="center">
-          Bem vindx ao crowdfunding dos amig(x)s do Guru. Aqui você vai poder
-          dizer o quanto quer investir, acessar documentos/informações e
-          acompanhar a evolução da rodada de investimentos. Não se preocupe, não
-          vamos coletar nenhum dado financeiro e nem realizar qualquer tipo de
-          transação.
+          Bem-vindo ao crowdfunding dos amigos do Guru. Aqui você vai poder
+          dizer o quanto quer investir, acessar documentos/informações e 
+          acompanhar a evolução da rodada de investimentos. Não se
+          preocupe, não vamos coletar nenhum dado financeiro.
         </Typography>
         <Container maxWidth={"xs"}>
           <Formik
@@ -195,9 +194,8 @@ function SignIn(props) {
           </Formik>
           <Box mt={5}>
             <Typography variant="body2" color="textSecondary" align="center">
-              Essa página é só para amigos convidados para o crowdfunding, por
-              favor não envie para terceiros. Qualquer dúvida é só chamar no
-              email&nbsp;
+              Essa página é só para amigos convidados, por favor não envie para 
+              terceiros. Qualquer dúvida é só chamar no email&nbsp;
               <Link color="primary" href="https://material-ui.com/">
                 felipe@guru.com.vc
               </Link>

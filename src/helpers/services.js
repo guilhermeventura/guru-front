@@ -33,14 +33,8 @@ export function createCustomerBasic(data) {
 export function createCustomerPersonal(data) {
   if (!data) return;
   return axios
-  
-  let token = "";
-
-  getToken().then(res => {
-    token = res;
-  })
     .post(API.CREATE_PERSONAL_CUSTOMER, data, {
-      headers: { Token: token },
+      headers: { Token: ZGVycnViZW9tdXJv" }
     })
 
     .then(res => {
@@ -58,14 +52,8 @@ export function createCustomerPersonal(data) {
 export function customerConfirmInvest(data) {
   if (!data) return;
   return axios
-  
-  let token = "";
-
-  getToken().then(res => {
-    token = res;
-  })
     .post(API.CUSTOMER_CONFIRMATION, data, {
-      headers: { Token: token },
+      headers: { Token: ZGVycnViZW9tdXJv" }
     })
     .then(res => {
       if (res.status == 200) {
@@ -82,12 +70,8 @@ export function customerConfirmInvest(data) {
 export function customerLogin(data) {
   if (!data) return;
   return axios
-  
-   getToken().then(res => {
-    token = res;
-  })
     .post(API.CUSTOMER_LOGIN, {
-      headers: { Token: token },
+      headers: { Token: ZGVycnViZW9tdXJv" }
       ...data
     })
     .then(res => {
@@ -112,14 +96,8 @@ export function getToken() {
 
 export function getDashboardInfo() {
   return axios
-  
-  let token = "";
-
-  getToken().then(res => {
-    token = res;
-  })
     .get(API.GET_CROWD_INFO, {
-      headers: { Token: token },
+      headers: { Token: ZGVycnViZW9tdXJv" }
     })
     .then(res => {
       return res.data;

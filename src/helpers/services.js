@@ -71,7 +71,7 @@ export function customerLogin(data) {
   if (!data) return;
   return axios
     .post(API.CUSTOMER_LOGIN, {
-      headers: { Token: "ZGVycnViZW9tdXJv" }
+      headers: { Token: "ZGVycnViZW9tdXJv" },
       ...data
     })
     .then(res => {

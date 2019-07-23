@@ -26,6 +26,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { getDashboardInfo } from "./../helpers/services";
 import InvestModal from "./../components/investment-modal/investment-modal";
 import headerBG from "./../assets/dashboard-header-bg.png";
+import headerBGMobile from "./../assets/dashboard-header-mobile.png";
 import guruLogoGreen from "./../assets/guru-logo-verde.png";
 
 const classes = theme => ({
@@ -45,7 +46,10 @@ const classes = theme => ({
   },
 
   cover: {
-    marginTop: "-25px"
+    marginTop: "-25px",
+    [theme.breakpoints.down("sm")]: {
+      marginTop: 10
+    }
   },
 
   investButton: {
@@ -63,7 +67,7 @@ const classes = theme => ({
     borderTopRightRadius: "20px",
     borderBottomRightRadius: "20px",
     [theme.breakpoints.up("md")]: {
-      marginTop: "-44px",
+      marginTop: "-24px",
       marginLeft: "-59px"
     },
 
@@ -142,6 +146,11 @@ const classes = theme => ({
       marginBottom: theme.spacing(2)
     }
   },
+  mbhead: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1.7rem"
+    }
+  },
   faqbtn: {
     width: "60%",
     [theme.breakpoints.down("sm")]: {
@@ -155,7 +164,7 @@ const classes = theme => ({
     zIndex: "2",
 
     [theme.breakpoints.down("sm")]: {
-      background: `url(${headerBG}) no-repeat -350px top  / cover`
+      background: `url(${headerBGMobile}) no-repeat center top  / cover`
     }
   },
   daysleft: {
@@ -165,9 +174,12 @@ const classes = theme => ({
     top: "290px",
     textAlign: "center",
     [theme.breakpoints.down("sm")]: {
-      top: 210,
-      width: 110,
-      right: 120
+      width: 125,
+      top: "85%",
+      position: "absolute",
+      left: "50%",
+
+      transform: "translate(-50%, -50%)"
     }
   }
 });
@@ -212,14 +224,26 @@ class Dashboard extends React.Component {
     var formatter = new Intl.NumberFormat("pt-BR", {
       minimumFractionDigits: 2
     });
-    console.log("after", value);
+    console.log("after", value, isNaN(value));
     if (value < 5000 || value > 50000) {
       alert("O Valor do Investimento deve estar entre R$ 5.000 e R$ 50.000");
-    } else {
       this.setState({
-        investedAmount: formatter.format(value),
-        enableInvest: true
+        investedAmount: "",
+        enableInvest: false
       });
+    } else {
+      if (isNaN(value)) {
+        alert("Somente Números");
+        this.setState({
+          investedAmount: "",
+          enableInvest: false
+        });
+      } else {
+        this.setState({
+          investedAmount: formatter.format(value),
+          enableInvest: true
+        });
+      }
     }
   }
   handleAmmountChange(evt) {
@@ -268,19 +292,22 @@ class Dashboard extends React.Component {
             alignItems="center"
             spacing={1}>
             <Grid item md={2} sm={12} xs={12}>
-              <Box className={classes.avatar}>
-                <img
-                  className={classes.logoGreen}
-                  src={guruLogoGreen}
-                  alt="GUru"
-                />
-              </Box>
+              <Hidden smDown>
+                <Box className={classes.avatar}>
+                  <img
+                    className={classes.logoGreen}
+                    src={guruLogoGreen}
+                    alt="GUru"
+                  />
+                </Box>
+              </Hidden>
             </Grid>
             <Grid item md={5} sm={12} xs={12} className={classes.order3sm}>
               <Box className={classes.progressBar}>
                 <p
                   className={
-                    this.state.data && parseFloat(this.state.data.fundingPercent) >= 100
+                    this.state.data &&
+                    parseFloat(this.state.data.fundingPercent) >= 100
                       ? classes.progressAmountFull
                       : classes.progressAmount
                   }
@@ -293,7 +320,13 @@ class Dashboard extends React.Component {
                 </p>
               </Box>
             </Grid>
-            <Grid item container md={5} xs={12} alignItems="flex-start">
+            <Grid
+              item
+              container
+              md={5}
+              xs={12}
+              alignItems="flex-start"
+              style={{ marginTop: 20 }}>
               <Grid item md={6} xs={7}>
                 <TextField
                   id="investedAmount"
@@ -318,6 +351,7 @@ class Dashboard extends React.Component {
                   className={classes.investButton}
                   color="primary"
                   variant="contained"
+                  style={{ color: "#FFF" }}
                   // disabled={!this.state.enableInvest}
                   onClick={() => this.handleOpenModal()}>
                   Investir
@@ -331,35 +365,38 @@ class Dashboard extends React.Component {
             justify="center"
             alignItems="center">
             <Grid item md={3} xs={6} className={classes.spaceInMobile}>
-              <Typography color="primary" variant="h4">
+              <Typography
+                color="primary"
+                variant="h4"
+                className={classes.mbhead}>
                 {this.state.data && this.state.data.fundingAmount}
               </Typography>
-              <Typography>Investido</Typography>
+              <Typography variant="body2">Investido</Typography>
             </Grid>
             <Grid md={3} item xs={6} className={classes.spaceInMobile}>
-              <Typography variant="h4">
+              <Typography variant="h4" className={classes.mbhead}>
                 <FavoriteIcon color="primary" />
                 &nbsp;
                 {this.state.data && this.state.data.investors}
               </Typography>
-              <Typography>Investidores</Typography>
+              <Typography variant="body2">Investidores</Typography>
             </Grid>
             <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.target}
-                <Typography>Objetivo</Typography>
+                <Typography variant="body2">Objetivo</Typography>
               </Typography>
             </Grid>
             <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.equity}
-                <Typography>Equity</Typography>
+                <Typography variant="body2">Equity</Typography>
               </Typography>
             </Grid>
             <Grid md={2} item xs={6} className={classes.spaceInMobile}>
               <Typography variant="h6">
                 {this.state.data && this.state.data.pre_money_valuation}
-                <Typography>Pre-Money Valuation</Typography>
+                <Typography variant="body2">Pre-Money Valuation</Typography>
               </Typography>
             </Grid>
           </Grid>

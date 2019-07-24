@@ -120,7 +120,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 name="password"
-                label="Senha"
+                label="Senha-Convite"
                 type="password"
                 id="password"
                 autoComplete="current-password"

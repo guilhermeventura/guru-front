@@ -489,7 +489,7 @@ class Dashboard extends React.Component {
               <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography className={classes.faqHeader}>
-                    Se bater a meta e tiver mais de 100% o que acontece?
+                    O que acontece se os valores investidos no crowfunding superarem R$ 500.000?
                   </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -507,20 +507,9 @@ class Dashboard extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Typography className={classes.faqContent}>
-                    O valor total da captação é de R$ 2.500.000.
-                  </Typography>
-                </ExpansionPanelDetails>
-              </ExpansionPanel>
-              <ExpansionPanel>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className={classes.faqHeader}>
-                    De onde virá o restante do investimento?
-                  </Typography>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <Typography className={classes.faqContent}>
-                    Fundos de venture capital, parceiros estratégicos e
-                    investidores profissionais.
+                    O valor total da captação é de R$ 2.500.000. O restante do
+                    investimento virá de fundos de venture capital, parceiros
+                    estratégicos e investidores profissionais.
                   </Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
@@ -532,8 +521,9 @@ class Dashboard extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Typography className={classes.faqContent}>
-                    Dinheiro investido ÷ (Valuation Pre-Money + Captação da
-                    Rodada)
+                    Dinheiro investido ÷ (Valuation Pre-Money + Captação da Rodada).
+                    Ex: se você investir R$ 50.000 terá 0,4% da empresa
+                    (50.000 ÷ 10.000.000+2.500.000).
                   </Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
@@ -545,8 +535,8 @@ class Dashboard extends React.Component {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <Typography className={classes.faqContent}>
-                    Estimamos que o desenvolvimento leve 9 meses para a versão
-                    beta e 12 meses para o lançamento oficial.
+                    Estimamos o lançamento de uma versão beta para 03/2020 e o
+                    lançamento oficial para 06/2020.
                   </Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>
@@ -577,6 +567,32 @@ class Dashboard extends React.Component {
                     investimentos em startups, uma vez que esse tipo de contrato
                     protege o investidor de riscos associados ao estágio inicial
                     da empresa.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Como vou ser informado sobre a evolução da empresa?
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    Vamos fazer um report mensal com os principais acontecimentos
+                    e KPI’s por email para todos os investidores.
+                  </Typography>
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+              <ExpansionPanel>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography className={classes.faqHeader}>
+                    Para quem quiser aprender mais sobre investimentos em startups
+                    sugerimos a leitura do material no link abaixo (em inglês).
+                  </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <Typography className={classes.faqContent}>
+                    https://fundersclub.com/learn/guides/vc-101/
                   </Typography>
                 </ExpansionPanelDetails>
               </ExpansionPanel>

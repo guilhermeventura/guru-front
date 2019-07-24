@@ -169,7 +169,7 @@ function SignIn(props) {
                   margin="normal"
                   id="email"
                   name="password"
-                  label="Senha"
+                  label="Senha-Convite"
                   type="password"
                   id="password"
                   autoComplete="current-password"

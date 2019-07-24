@@ -23,6 +23,7 @@ export function createCustomerBasic(data) {
     })
     .then(res => {
       if (res.status == 200) {
+        localStorage.setItem("guruEmail", data.email);
         return true;
       }
 
@@ -120,6 +121,8 @@ export function getCEP(cep) {
 }
 
 export const countries = [
+  { name: "Brasil", code: "BR" },
+
   { name: "Afghanistan", code: "AF" },
   { name: "land Islands", code: "AX" },
   { name: "Albania", code: "AL" },
@@ -150,7 +153,6 @@ export const countries = [
   { name: "Bosnia and Herzegovina", code: "BA" },
   { name: "Botswana", code: "BW" },
   { name: "Bouvet Island", code: "BV" },
-  { name: "Brazil", code: "BR" },
   { name: "British Indian Ocean Territory", code: "IO" },
   { name: "Brunei Darussalam", code: "BN" },
   { name: "Bulgaria", code: "BG" },

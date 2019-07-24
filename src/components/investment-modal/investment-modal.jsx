@@ -335,7 +335,7 @@ class InvestModal extends React.Component {
                     component={TextField}
                     InputProps={{
                       endAdornment: (
-                        <InputAdornment position="end">`
+                        <InputAdornment position="end">
                           <IconButton
                             edge="end"
                             aria-label="Toggle password visibility"

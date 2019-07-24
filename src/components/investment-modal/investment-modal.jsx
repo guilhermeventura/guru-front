@@ -268,11 +268,12 @@ class InvestModal extends React.Component {
                   <Field
                     id="documentNumber"
                     name="documentNumber"
-                    label="RG"
+                    label="CPF"
                     variant="outlined"
                     fullWidth
                     type="tel"
                     margin="normal"
+                    helperText="Somente números"
                     component={TextField}
                   />
                 </Grid>
@@ -280,12 +281,11 @@ class InvestModal extends React.Component {
                   <Field
                     id="registrationNumber"
                     name="registrationNumber"
-                    label="CPF"
+                    label="RG"
                     variant="outlined"
                     fullWidth
                     type="tel"
                     margin="normal"
-                    helperText="Somente números"
                     component={TextField}
                   />
                 </Grid>

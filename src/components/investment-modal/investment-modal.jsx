@@ -319,6 +319,14 @@ class InvestModal extends React.Component {
                     id="zipcode"
                     name="zipcode"
                     label="CEP"
+                    onBlur={() => {
+                      getCEP(values.zipcode).then(data => {
+                        setFieldValue("address", data.logradouro);
+                        setFieldValue("neighborhood", data.bairro);
+                        setFieldValue("city", data.localidade);
+                        setFieldValue("state", data.uf);
+                      })
+                    }}
                     variant="outlined"
                     fullWidth
                     type="tel"

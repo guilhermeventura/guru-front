@@ -489,7 +489,7 @@ class Dashboard extends React.Component {
               <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography className={classes.faqHeader}>
-                    O que acontece se os valores investidos no crowfunding superarem R$ 500.000?
+                    O que acontece se os valores investidos superarem a meta da rodada de R$500.000?
                   </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>

@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API = {
   CREATE_CUSTOMER:
-    "https://application.guru.com.vc/api/v1/crowdfun/customer/basic/create",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/basic/create",
   CREATE_PERSONAL_CUSTOMER:
-    "https://application.guru.com.vc/api/v1/crowdfun/customer/personal/create",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/personal/create",
   CUSTOMER_CONFIRMATION:
-    "https://application.guru.com.vc/api/v1/crowdfun/customer/confirmation/create",
-  CUSTOMER_LOGIN: "https://application.guru.com.vc/api/v1/crowdfun/login",
-  GET_CROWD_INFO: "https://application.guru.com.vc/api/v1/crowdfun/campaign",
-  GET_TOKEN: "https://application.guru.com.vc/api/v1/crowdfun/campaign/token",
+    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/confirmation/create",
+  CUSTOMER_LOGIN: "https://dagalera.guru.com.vc/api/v1/crowdfun/login",
+  GET_CROWD_INFO: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign",
+  GET_TOKEN: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign/token",
   GET_CEP: "https://viacep.com.br/ws/"
 };
 
@@ -35,7 +35,7 @@ export function createCustomerPersonal(data) {
   if (!data) return;
   return axios
     .post(API.CREATE_PERSONAL_CUSTOMER, data, {
-      headers: { Token: "ZGVycnViZW9tdXJv" }
+      headers: { Token: "b211cm92YWljYWly" }
     })
 
     .then(res => {
@@ -54,7 +54,7 @@ export function customerConfirmInvest(data) {
   if (!data) return;
   return axios
     .post(API.CUSTOMER_CONFIRMATION, data, {
-      headers: { Token: "ZGVycnViZW9tdXJv" }
+      headers: { Token: "b211cm92YWljYWly" }
     })
     .then(res => {
       if (res.status == 200) {
@@ -98,7 +98,7 @@ export function getToken() {
 export function getDashboardInfo() {
   return axios
     .get(API.GET_CROWD_INFO, {
-      headers: { Token: "ZGVycnViZW9tdXJv" }
+      headers: { Token: "b211cm92YWljYWly" }
     })
     .then(res => {
       return res.data;

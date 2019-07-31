@@ -2,14 +2,14 @@ import axios from "axios";
 
 const API = {
   CREATE_CUSTOMER:
-    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/basic/create",
+    "https://application.guru.com.vc/api/v1/crowdfun/customer/basic/create",
   CREATE_PERSONAL_CUSTOMER:
-    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/personal/create",
+    "https://application.guru.com.vc/api/v1/crowdfun/customer/personal/create",
   CUSTOMER_CONFIRMATION:
-    "https://dagalera.guru.com.vc/api/v1/crowdfun/customer/confirmation/create",
-  CUSTOMER_LOGIN: "https://dagalera.guru.com.vc/api/v1/crowdfun/login",
-  GET_CROWD_INFO: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign",
-  GET_TOKEN: "https://dagalera.guru.com.vc/api/v1/crowdfun/campaign/token",
+    "https://application.guru.com.vc/api/v1/crowdfun/customer/confirmation/create",
+  CUSTOMER_LOGIN: "https://application.guru.com.vc/api/v1/crowdfun/login",
+  GET_CROWD_INFO: "https://application.guru.com.vc/api/v1/crowdfun/campaign",
+  GET_TOKEN: "https://application.guru.com.vc/api/v1/crowdfun/campaign/token",
   GET_CEP: "https://viacep.com.br/ws/"
 };
 
